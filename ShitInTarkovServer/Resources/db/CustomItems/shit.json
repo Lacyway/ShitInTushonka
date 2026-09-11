@@ -1,0 +1,108 @@
+{
+    "6a9eff3a944cbaa6ea9dc46b": {
+        "itemTplToClone": "5c12620d86f7743f8b198b72",
+        "parentId": "57864c8c245977548867e7f1",
+        "handbookParentId": "5b47574386f77428ca22b2f3",
+        "overrideProperties": {
+            "Prefab": {
+                "path": "shit/caca_a.bundle",
+                "rcid": ""
+            },
+            "ExaminedByDefault": true,
+            "DiscardingBlock": false,
+            "IsUndiscardable": false,
+            "QuestItem": false,
+            "Height": 1,
+            "Width": 1,
+            "Weight": 0.15
+        },
+        "locales": {
+            "en": {
+                "name": "Human Feces",
+                "shortName": "Turd",
+                "description": "A literal human shit. Why do you have this in your hands?"
+            }
+        },
+        "addtoInventorySlots": [],
+        "addtoModSlots": false,
+        "modSlot": [],
+        "addtoItemBlacklist": true,
+        "registerInFleaPrices": false,
+        "handbookPriceRoubles": 52000,
+        "addtoTraders": false,
+        "addtoBots": false,
+        "addtoStaticLootContainers": false,
+        "traders": {},
+        "staticLootContainers": []
+    },
+    "6a9eff3c705e865c6d160dc1": {
+        "itemTplToClone": "5c12620d86f7743f8b198b72",
+        "parentId": "57864c8c245977548867e7f1",
+        "handbookParentId": "5b47574386f77428ca22b2f3",
+        "overrideProperties": {
+            "Prefab": {
+                "path": "shit/caca_d.bundle",
+                "rcid": ""
+            },
+            "ExaminedByDefault": true,
+            "DiscardingBlock": false,
+            "IsUndiscardable": false,
+            "Height": 1,
+            "Width": 1,
+            "Weight": 0.15
+        },
+        "locales": {
+            "en": {
+                "name": "Human Feces",
+                "shortName": "Turd",
+                "description": "A literal human shit. Why do you have this in your hands?"
+            }
+        },
+        "addtoInventorySlots": [],
+        "addtoModSlots": false,
+        "modSlot": [],
+        "addtoTraders": false,
+        "addtoBots": false,
+        "addtoItemBlacklist": true,
+        "registerInFleaPrices": false,
+        "handbookPriceRoubles": 74000,
+        "addtoStaticLootContainers": false,
+        "traders": {},
+        "staticLootContainers": []
+    },
+    "6a9eff3e3f5a25fe1bc3d647": {
+        "itemTplToClone": "5c12620d86f7743f8b198b72",
+        "parentId": "57864c8c245977548867e7f1",
+        "handbookParentId": "5b47574386f77428ca22b2f3",
+        "overrideProperties": {
+            "Prefab": {
+                "path": "shit/caca_e.bundle",
+                "rcid": ""
+            },
+            "ExaminedByDefault": true,
+            "DiscardingBlock": false,
+            "IsUndiscardable": false,
+            "Height": 1,
+            "Width": 1,
+            "Weight": 0.15
+        },
+        "locales": {
+            "en": {
+                "name": "Human Feces",
+                "shortName": "Turd",
+                "description": "A literal human shit. Why do you have this in your hands?"
+            }
+        },
+        "addtoInventorySlots": [],
+        "addtoModSlots": false,
+        "modSlot": [],
+        "handbookPriceRoubles": 36000,
+        "addtoTraders": false,
+        "addtoBots": false,
+        "addtoItemBlacklist": true,
+        "registerInFleaPrices": false,
+        "addtoStaticLootContainers": false,
+        "traders": {},
+        "staticLootContainers": []
+    }
+}

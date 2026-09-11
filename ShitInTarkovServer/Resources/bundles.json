@@ -1,0 +1,22 @@
+{
+  "manifest": [
+    {
+      "key": "shit/caca_a.bundle",
+      "dependencyKeys": [
+        "shaders"
+      ]
+    },
+    {
+      "key": "shit/caca_d.bundle",
+      "dependencyKeys": [
+        "shaders"
+      ]
+    },
+    {
+      "key": "shit/caca_e.bundle",
+      "dependencyKeys": [
+        "shaders"
+      ]
+    }
+  ]
+}
