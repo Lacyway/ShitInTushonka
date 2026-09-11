@@ -6,7 +6,7 @@ using ShitInTarkovClient.Utils;
 
 namespace ShitInTarkovClient;
 
-[BepInPlugin("lcw.lacyway.st", "ShitInTarkov", PluginVersion)]
+[BepInPlugin("lcw.lacyway.sit", "ShitInTarkov", PluginVersion)]
 public sealed class ST_Plugin : BaseUnityPlugin
 {
     public const string PluginVersion = "1.0.0";
