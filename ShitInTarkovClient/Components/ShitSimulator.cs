@@ -9,7 +9,6 @@ using EFT.InventoryLogic;
 using GPUInstancer;
 using ShitInTarkovClient.Models;
 using ShitInTarkovClient.Utils;
-using UnityDiagnostics;
 using UnityEngine;
 using Random = System.Random;
 
@@ -27,9 +26,13 @@ public sealed class ShitSimulator : MonoBehaviour
 
     private CancellationTokenSource _cts;
     private Player _player;
+
     private float _shitTimer;
     private float _shitThreshold = 600f;
     private const float _height = 0.5f;
+
+    private float _swampSpeedLimitTimer;
+    private bool _isSwampLimitActive;
 
     private void Awake()
     {
@@ -45,12 +48,56 @@ public sealed class ShitSimulator : MonoBehaviour
 
     private void Update()
     {
+        // 1. Handle autonomous shit interval
         _shitTimer += Time.deltaTime;
         if (_shitTimer >= _shitThreshold)
         {
             _shitTimer -= _shitThreshold;
             _ = DoShit(_cts.Token);
             _shitThreshold = _random.Range(480f, 900f);
+        }
+
+        // 2. Handle Swamp Speed Limit active duration
+        if (_isSwampLimitActive)
+        {
+            _swampSpeedLimitTimer -= Time.deltaTime;
+            if (_swampSpeedLimitTimer <= 0f)
+            {
+                RemoveSwampAssLimit();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Triggered whenever a shit occurs. Sets or extends the slow-down duration.
+    /// </summary>
+    private void TriggerSwampAssLimit(float durationSeconds = 5f)
+    {
+        if (_player == null)
+        {
+            return;
+        }
+
+        _swampSpeedLimitTimer = durationSeconds;
+
+        if (!_isSwampLimitActive)
+        {
+            _player.AddStateSpeedLimit(0.25f, Player.ESpeedLimit.Swamp);
+            _isSwampLimitActive = true;
+        }
+    }
+
+    private void RemoveSwampAssLimit()
+    {
+        _swampSpeedLimitTimer = 0f;
+
+        if (_isSwampLimitActive)
+        {
+            if (_player != null)
+            {
+                _player.RemoveStateSpeedLimit(Player.ESpeedLimit.Swamp);
+            }
+            _isSwampLimitActive = false;
         }
     }
 
@@ -87,7 +134,7 @@ public sealed class ShitSimulator : MonoBehaviour
             return;
         }
 
-        _player.AddStateSpeedLimit(0.25f, Player.ESpeedLimit.Swamp);
+        TriggerSwampAssLimit(5f);
 
         var forwardVector = Quaternion.Euler(Mathf.Clamp(_player.Rotation.y, -90f, 45f), _player.Rotation.x, 0f) * new Vector3(0f, 1f, 1f);
         var reverseVector = -forwardVector * 2f;
@@ -112,16 +159,20 @@ public sealed class ShitSimulator : MonoBehaviour
         }
         OnShitHappened?.Invoke(new ShitPacketEventArgs(_player, item, position, rotation, velocity, angularVelocity, clipType));
 
-        await Task.Delay(TimeSpan.FromSeconds(0.5d));
+        await Task.Delay(TimeSpan.FromSeconds(0.5d), ct);
+        if (ct.IsCancellationRequested || _player == null || _player.GameWorld == null)
+        {
+            return;
+        }
 
         var lootItem = _player.GameWorld.ThrowItem(item, _player, position, rotation, velocity, angularVelocity, true, true,
             EFTHardSettings.Instance.ThrowLootMakeVisibleDelay);
 
-        await Task.Delay(TimeSpan.FromSeconds(0.1d));
-        lootItem.gameObject.AddComponent<PoopCollisionHandler>();
-
-        await Task.Delay(TimeSpan.FromSeconds(5d));
-        _player.RemoveStateSpeedLimit(Player.ESpeedLimit.Swamp);
+        await Task.Delay(TimeSpan.FromSeconds(0.1d), ct);
+        if (lootItem != null && lootItem.gameObject != null)
+        {
+            lootItem.gameObject.AddComponent<PoopCollisionHandler>();
+        }
     }
 
     public static async ValueTask ReplicatedShit(Player player, Item item, Vector3 position,
@@ -151,7 +202,10 @@ public sealed class ShitSimulator : MonoBehaviour
             EFTHardSettings.Instance.ThrowLootMakeVisibleDelay);
 
         await Task.Delay(TimeSpan.FromSeconds(0.1d));
-        lootItem.gameObject.AddComponent<PoopCollisionHandler>();
+        if (lootItem != null && lootItem.gameObject != null)
+        {
+            lootItem.gameObject.AddComponent<PoopCollisionHandler>();
+        }
     }
 
     private AudioClipType PlaySound(Vector3 position)
@@ -175,6 +229,7 @@ public sealed class ShitSimulator : MonoBehaviour
 
     private void OnDestroy()
     {
+        RemoveSwampAssLimit();
         _cts?.Cancel();
         _cts?.Dispose();
     }
@@ -182,13 +237,19 @@ public sealed class ShitSimulator : MonoBehaviour
     public async ValueTask SimulateLactoseIntolerance()
     {
         _shitTimer = 0f;
-        var shitsToTake = (int)_random.Range(2f, 4f);
+        var shitsToTake = _random.Next(2, 5);
 
-        await Task.Delay(TimeSpan.FromSeconds(2d));
+        await Task.Delay(TimeSpan.FromSeconds(2d), _cts.Token);
 
         for (var i = 0; i < shitsToTake; i++)
         {
+            if (_cts.Token.IsCancellationRequested)
+            {
+                break;
+            }
+
             await DoShit(_cts.Token);
+            await Task.Delay(TimeSpan.FromSeconds(1.5d), _cts.Token);
         }
     }
 

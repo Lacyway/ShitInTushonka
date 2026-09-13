@@ -9,7 +9,7 @@ namespace ShitInTarkovClient;
 [BepInPlugin("lcw.lacyway.sit", "ShitInTarkov", PluginVersion)]
 public sealed class ST_Plugin : BaseUnityPlugin
 {
-    public const string PluginVersion = "1.0.1";
+    public const string PluginVersion = "1.0.2";
     public static readonly string AssetsDirectory = Path.Combine(BepInEx.Paths.PluginPath, @"ShitInTarkovClient\Assets\");
 
     internal static ManualLogSource ST_Logger;
